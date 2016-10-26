@@ -1,0 +1,104 @@
+class ArticlesController < ApplicationController
+	before_action :authenticate_user!, except: [:show,:index]#
+	#before_action :authenticate_user!, only: [:create,:new]#de igual forma sirve para autenticar usuarios como las dos lineas de abajo, con la excepcion de que este es un metodo de devise
+	#before_action :validate_user, except: [:show,:index] 
+	#after_action :validate_user, except: [:show,:index] tambien se puede utilizar pero dependiendo del caso
+	#GET/articles       a esta ruta se accede con el verbo get y el pad article
+	before_action :set_article, except: [:index,:new,:create]#el metodo set article, evita que repitamos codigo, con el metodo que se encuentra especificado abajo. excepto a estas que no mandamos ningun parametro 
+	def index	#hace referencia al archivo index.html.erb en vista, articles. dada que esta es la accion que nos traera la lista de todos los articulos, se programara todo en la accion index
+	
+	#este seria como un SELECT * FROM articles en sql
+	@articles = Article.all   #dado que en article.rb solo porque esta heredando de ActiveRecord::Base ya tiene los metodos con los que se accedera a la base de datos 	
+	end     #el metodo all del dolelo nos permite traer todos los registros de la base de datos de este modelo ARTICLE
+	#dado que empieza con un arroba, la tendremos tanto como en la vista como en el controlador
+		
+
+	#GET/articles/:id
+		#cuando se genera una tabla, automaticamente se crea un campo llamado id q sera PK incrementable,ese es el campo por donde ruby on rails busca los registros
+	def show
+
+	#@article = Article.find(params[:id])#params es un hash que tiene todos los parametros que se mandaron al servidor web. busca el elemento  LINEA DE CODIGO REPETIDA, SOLO BASTA CON TENERLA EN EL METODO SET_ARTICLE 
+	#where    BUSQUEDAS
+	#Article.where(" body LIKE ? ","%hola%")
+	#Article.where(" id = ? ",params[:id])#este solo devolvera un elemento
+	#Article.where(" id = ? AND title = ?",params[:id],params[:title])#,multiples condiciones
+	#Article.where(" id = ? OR title = ?",params[:id],params[:title])#,multiples condiciones
+	#Article.where.not(" id = ?",params[:id])#busqueda de todos los articulos que el id sea diferente del que el usuario paso como parametros
+
+		@article.update_visits_count#va aumentando con la ayuda de un metodo en el modelo
+		@comment = Comment.new
+
+
+	end
+
+
+	#GET/articles/new
+	def new
+		@article = Article.new #crea un nuevo articulo, pero no guarda en la base de datos, solamente lo guarda en memoria
+	end
+
+	#POST/articles
+	def create
+		# es como un INSERT INTO en sql
+		#esta linea de codigo de abajo es por seguridad, trabaja junto con el metodo private, y es para evitar q el usuario sobreescriba algun dato q no tenga acceso
+		#@article = Article.new(article_params)#de esta forma
+		@article = current_user.articles.new(article_params)##se le agrego current_user para poderarticles es un metodo que ahora current_user tiene, ya que se lo pusimos en models user.rb
+
+		#@article = Article.new(title: params[:article][:title],#title: pasamos como clave el campo de la base de datos q queremos guardar, y el parametro. primero accedemos a article y luego al campo
+		#					   body: params[:article][:body])#los datos que mandamos en un formulario o por la url, se acceden por el metodo params
+	
+		#TAMBIEN SE PUEDE HACER DE ESTA FORMA, CON CREATE
+		#@article = Article.create(title: params[:article][:title],
+		#					   body: params[:article][:body])
+
+		#validacion
+		if @article.save#para guardarlo en la base de datos #si el articulo pudo guardarse es q las validaciones pasaron 	
+			redirect_to @article	#redirigir a la vista de ese articulo
+		else
+			render :new #si las validaciones no pasaron, vamos a hacer render a la accion new, osea redirige a la misma pagina
+		end
+ 	end
+
+
+
+ 	def edit#este metodo trabajar con el update
+ 		#@article = Article.find(params[:id])LINEA DE CODIGO REPETIDA, SOLO BASTA CON TENERLA EN EL METODO SET_ARTICLE 
+ 	end
+
+ 	#PUT /articles/:id
+ 	def update
+ 	 #@article = Article.find(params[:id])LINEA DE CODIGO REPETIDA, SOLO BASTA CON TENERLA EN EL METODO SET_ARTICLE 
+ 	 	if @article.update(article_params)#se le pasan los strong params para proteger la applicacion
+ 	 		redirect_to @article#si el articulo pudo haber sido guardado redirigelo a article
+ 	 	else
+ 	 		render :edit#si algo salio mal,redirigirlo a edit
+ 	 	end
+ 		
+ 	end
+
+	#DELETE /articles/:id
+ 	def destroy 	#Destroy elimina el objeto de la base de datos
+ 		#DELETE FORM articles
+ 		@article.destroy
+ 		redirect_to articles_path
+ 	end 
+
+
+
+	#esto es para hacer mas segura la pagina, y evitar que el usuario reedite algun campo que no tenga acceso
+ 	private #todo lo que este abajo del private, van a ser metodos privados de la clase
+
+ 	def set_article
+ 		@article = Article.find(params[:id])# para que no se reputa el codigo con esta linea, hacemos refactor de el, y eliminamos las lineas q lo tengan varias veces
+ 	end
+
+ 	def validate_user
+ 		redirect_to new_user_session_path, notice: "Necesitas iniciar sesion" 
+ 	end
+
+ 	def article_params #article_params es un nombre que generalmente es convencion
+ 		params.require(:article).permit(:title,:body)	#requerimos article, y luego pasamos un arreglo con campos que son permitidos para esta accion
+ 	#por ejemplo title y body, y no son permitidos visits_count ni ningun dato que sea sensible, ninguno que queramos que el usuario toque
+ 	end 	
+ 	
+end

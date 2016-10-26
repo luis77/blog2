@@ -1,0 +1,22 @@
+	<!--< @articles.each do |article| %><each nos permite iterar el arreglo, y en cada iteracion del arreglo, la variable article va cambiando su valor por cada variable que va iterando. 
+
+	este ciclo no es necesario cuando contamos con el render le pasamos un modelo de la base de datos, el solo va a iterar el arreglo sin este ciclo-->
+					   <div class="col-md-4 top-space">
+						    <div class="box relative article-height">
+						   			<div class="absolute article-height background-cover" style="background:url(<%= article.cover.url(:thumb) %>);top:0px;left:0px;width:100%;">
+						   			</div>
+
+						   		<div class="absolute article-height background-cover" style="background:rgba(0,0,0,0.5);top:0px;left:0px;width:100%;">
+						   			
+						   		</div>
+
+						   		<div class="relative white text-center">
+								<h2><%= link_to article.title, article %> </h2><!--para poder dirigir al articulo y poder verlo. primero el link_to, luego el arreglo, y por ultimo la url que sera dirigida este article-->
+					 			<p>
+							   		<%=truncate(article.body,length:30) %><!--truncate recorta el texto-->
+								</p>
+								</div>
+							</div>
+						</div>
+
+				<!--<end%>-->

@@ -1,0 +1,27 @@
+<article class="bottom-space">
+<header class"background-cover" style="background:url(<%= @article.cover.url(:thumb)%>);top:0px;left:0px;width:100%;height:400px;background-size: cover;">
+	<!--<div class="field">
+		<%= image_tag @article.cover.url() %>dentro de los parentesis podemos colocar :thumb, :medium, o no colocar ninguno y muestra el tamaño original ejemplo:.cover.url(:thumb)
+	</div>-->
+</header>
+	<div class="row center-xs">
+		<div class="col-xs-12 ligth-border col-md-7">
+			<h1 class="be-big"><%= @article.title %> </h1>
+			<p class="text-right be-small">
+
+				<%=link_to "Atrás", articles_path, class:"underline" %> - <span class="red"><%= @article.visits_count %> visita(s) </span> -
+				
+				<% unless @article.user.nil? %><!--unless es como si fuese un if not, Amenos que el usuario sea nulo, has esto. para evitar algun error en los articulos que no hayan sido creados por usuarios-->
+				Escrito por: <%= @article.user.email %>
+ 			
+ 				<%end%>
+ 			</p>
+ 			<div class="text-center">
+ 				<%= Sanitize.fragment(@article.body, Sanitize::Config::RELAXED).html_safe %>
+ 			</div>
+ 			<div class="top-spac">
+ 				<%= render "articles/comments" %>
+ 			</div>
+		</div>
+	</div>
+</article>

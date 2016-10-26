@@ -1,0 +1,93 @@
+html, body { 
+	margin: 0px;/*para normalizar el margen que trae el navegador en algunas pc*/
+font-family: 'Roboto', sans-serif;/*para agregar el tipo de letra al cuerpo de la pagina*/
+}
+.btn{ 
+background-color: inherit;
+border: none;
+outline: none;
+text-transform: uppercase;
+cursor: pointer;
+font-size: 1.2em;
+padding: 10px 12px;
+}
+.red{
+	color: #E74C3C !important;
+}
+.blue{
+	color:blue !important;
+}
+
+a,a:visited{/* para eliminar ese color que se genera cuando uno visita una pagina*/
+	color:inherit;
+	text-decoration: none;
+}
+#logo{
+	font-size: 1.2em;
+}
+.no-margin{/*para quitar el margen que por default el navegador le crea a los titulos*/
+	margin: 0px;
+}
+.text-center{
+	text-align:center;
+}
+.text-right{
+	text-align:right;
+}
+.text-justify{
+	text-align:justify;
+}
+.be-big{
+	font-size:2em;
+}
+.be-small{
+	font-size:12px;
+}
+
+.underline{
+	text-decoration:underline;
+}
+
+.be-red{
+	background-color: rgb(200,50,50);
+}
+.white{
+color: white;
+}
+.grey{
+	color:#476789;
+}
+.large-padding{
+	padding: 10px 7px;
+}
+.field{
+	margin-top:1em 
+}
+.top-space{
+	margin-top:1em; 
+}
+.article-height{
+	height: 300px;
+}
+.background-cover{
+	background-position:center;
+	background-size:cover;   
+}
+.relative{
+	position:relative;
+}
+.absolute{
+	position:absolute;
+}
+.form-control {
+	border: none;
+	border-bottom: 1px solid;
+	outline: none;
+	width:100%; 
+	display: block;
+	padding: 10px 0px;
+	font-size: 1.2em;
+}
+.bottom-space{
+	margin-bottom: 2em;
+}

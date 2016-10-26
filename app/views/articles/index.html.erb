@@ -1,0 +1,11 @@
+<div class="container" style="margin:0 auto;">
+	<h1>Aríticulos</h1>
+		<div class="row">
+				<%= render @articles %>
+			</div>
+			<div class="top-space text-center">
+			<%= will_paginate @articles %>
+			<!--< article.body %> - < link_to "Eliminar", article, class:"red" , method: :delete%>el delete va a buscar a destroy en el articles_controller.rb 
+			 se quito para poder evitar q todos los usuarios lo usaran-->
+	    </div>
+</div>

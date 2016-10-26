@@ -1,0 +1,37 @@
+<header>
+		<nav class="be-red white large-padding">
+		<ul class="no-list row center-xs middle-xs"><!-- el center xs centra nuestra navegacion middle-xs centra verticalmente, ambos son de flexbox, los cold-md divide el porcentaje de la pagina para q todos sus elementos ocupen el mismo espacio-->
+			<li class="col-md">
+					<h1 class="no-margin" id="logo"><%= link_to "Blog", root_path%></h1>
+			</li>
+
+			<li class="col-md">
+				<%= link_to "Artículos", articles_path%></h1>
+			</li>
+
+			<% @categories.each do |category| %>
+				<li class="col-md">
+					<%= link_to category.name,category %> <!--DESPLIEGA LA LISTA DE CATEGORIAS REGISTRADAS EN LA BASE DE DATOS, el texto que aparecera en el link es el primer parametro, que es el nombre de la categoria, y el segundo parametro es hacia donde queremos que lo redirija-->
+				</li>
+			<%end%>
+
+			<% if user_signed_in? %><!-- el usuario inicio sesion? ese user que esta escrito alli, es el nombre del modelo que ejecutamos en el generador rails generate devise User. si fuese alumno, alumno_signed_in-->
+				
+				<li class="col-md">
+					<%= link_to "Cerrar sesión", destroy_user_session_path, method: :delete%>
+				</li>
+				
+				<%else%>
+				
+				<li class="col-md">
+					<%= link_to "Iniciar sesión", new_user_session_path%>
+				</li>
+				<li class="col-md">
+					<%= link_to "Crear cuenta", new_user_registration_path%>
+				</li>
+
+			<%end%>
+
+		</ul> 
+	</nav>
+	</header> 

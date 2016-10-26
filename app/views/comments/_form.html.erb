@@ -1,0 +1,25 @@
+<%= form_for([@article,@comment]) do |f| %><!--NESTED RESOURCES- debe contener el  recurso padre y el subrecurso.
+
+AJAX, PARA COLOCAR AJAX SE DEBE DE ANEXAR ESTO A LA PRIMERA LINEA DE CODIGO , remote: true, html: { id: "comments-form", :"data-type" =>"json" }
+
+REMOTE TRUE hace que el formulario se envie por ajax.sin ajax queda asi: form_for([@article,@comment]) do |f| el data-type -->
+
+  <% if @comment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+      <ul>
+      <% @comment.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :body %><br>
+    <%= f.text_area :body %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

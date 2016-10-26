@@ -1,0 +1,26 @@
+<% if user_signed_in? %>
+	<h1>Bienvenido <%= current_user.email %></h1><!--current_user utiliza la informacion del usuario-->
+<%end%>
+<% [1,2,3,4].each do |number| %>
+<p>Número: <%=number%></p>
+<%end%>
+
+<h1>diferencia</h1>
+<%= [1,2,3,4].each do |number| %>
+<p>Número: <%=number%></p>
+<%end%> 
+
+<h1>con operaciones</h1>
+<% [1,2,3,4].each do |number| %>
+<p>Número: <%=number * 2%></p>
+<%end%> 
+
+
+
+<h1>otro ejemplo</h1>
+<% mundo = "luis" %>
+<%= "Hola #{mundo}" %> 
+
+<h1>otro ejemplo</h1>
+<%= mundo = "luis" %>
+<%= "Hola #{mundo}" %>

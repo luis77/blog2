@@ -1,0 +1,9 @@
+<% @articles.each do |article| %><!--each nos permite iterar el arreglo, y en cada iteracion del arreglo, la variable article va cambiando su valor por cada variable que va iterando-->
+	<h1><%= link_to article.title, article %> </h1><!--para poder dirigir al articulo y poder verlo. primero el link_to, luego el arreglo, y por ultimo la url que sera dirigida este article-->
+	<div>
+		<%= article.body %> - <%= link_to "Eliminar", article, class:"red" , method: :delete%> -
+		<% if article.may_publish? %> 
+			<%= link_to "publicar", "/articles/#{article.id}/publish", class:"blue", method: :put%><!--el delete va a buscar a destroy en el articles_controller.rb-->
+		<%end%>
+	</div>
+<%end%>

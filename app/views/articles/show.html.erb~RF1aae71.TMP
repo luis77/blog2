@@ -1,0 +1,28 @@
+<h1><%= @article.title %> </h1><!--muestra los articulos, extrayendo el id del metodo de articles_controller-->
+<% unless @article.user.nil? %><!--unless es como si fuese IF NOT. AMENOS QUE EL USUARIO SEA NULO HAS ESTO-->
+	<p>
+		Escrito por: <%= @article.user.email%><!--muestra el email del usuario q escribio el articulo-->
+	</p>
+	<%end%>
+
+	<p>
+		Visitas: <%= @article.visits_count%><!--muestra el numero de visitas-->
+	</p>
+
+<div>
+	<%= @article.body %>
+</div>
+<div class="field">
+	<h3>Comentarios</h3>
+	<%= render "comments/form" %>
+	<ul>
+		<% @article.comments.each do |comment| %>
+		<li>
+			<%= comment.body %> - <%= comment.user.email %>	
+		</li>
+		<%end%>
+	</ul>
+</div>
+<div>
+	<%= link_to "Editar", edit_article_path(@article)%>
+</div>

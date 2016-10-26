@@ -1,0 +1,56 @@
+	<%= form_for(@article,html: { id: "articles_form" }) do |f| %> <!--form_for es un metodo de ruby, va a crear un formulario para el recurso que nosotros le pasemos como parametro EN ESTE CASO EL ARTICULO   @ARTICLE. La f representa un objeto que esta relacionado con el formulario que nos va a servir de ayuda
+	en caso de editar, el form_for llena los campos del formulario, gracias a la variable global @article de controller, @article = Article.find(params[:id])
+y en new, esta variable esta vacia  -->
+
+
+	<% @article.errors.full_messages.each do |message|%> <!--parte de la validacion, CUANDO EL ARTICULO EJECUTA EL METODO SAVE, Y NO SE PUEDE GUARDAR, SE GENERA UN METODO ERRORS CON LOS ERRORES QUE IMPIERON QUE NO SE GUARDARA. para eso sirve esta linea de codigo.FULL MESSAGES SE PUEDE CAMBIAR A ESPAÑOL-->
+		<div class="be-red white top-space">
+
+		* <%= message %>
+
+		</div>
+	<%end%><!--esisten diferentes metodos, text_field, text_area, text_hidden, password_field, etc-->
+		<div class="field">
+			<%= f.text_field :title, placeholder: "Título", class:"form-control"%><!--form control es una clase de css que nos permite estilizar el control-->
+		</div>
+
+		<div class="field">
+			Portada: <%= f.file_field :cover%><!--campo para agregar peperclip-->
+		</div>
+
+		<div class="field">
+		<!--< f.text_area :body, placeholder: "Escribe aquí el artículo", style:"display:none;", class:"form-control" %>-->
+			<%= f.hidden_field :body,id: "body-textarea" %><!--era el text area, ahora sirve al epiceditor-->
+			<%= f.hidden_field :markup_body,id: "markup-body-textarea" %><!--era el text area, ahora sirve al epiceditor-->
+			<div id="epiceditor" style="height:350px;"></div>
+		</div>
+		<div class="field">
+			<label>Categorías</label>
+			<% @categories.each do |category| %>
+				<div class="field">
+					<%= check_box_tag "categories[]", category.id %> <%= category.name%>
+				</div>
+			<%end%>
+		</div>
+		<div class="field">
+			<%= f.submit "Guardar", class:"btn be-red white" %>
+		</div>
+
+
+	<%end%>
+
+	<script>
+		var editor = new EpicEditor({
+			textarea: "markup-body-textarea",
+			file:{
+				name:"nuevo_articulo"
+			 }
+			});
+
+		editor.load();
+
+		$("#articles_form").on("submit",function(){
+			$("#body-textarea").val( editor.exportFile("nuevo_articulo", "html") );
+			$("#markup-body-textarea").val( editor.exportFile("nuevo_articulo") );
+		});
+	</script>
